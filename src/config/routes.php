@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 /**
  * Router file.
- * Generated at 2020-07-30 02:41:48 by AutoRouter.
+ * Generated at 2020-07-30 06:05:07 by AutoRouter.
  */
 
 use Hyperf\HttpServer\Router\Router;
@@ -30,4 +30,9 @@ Router::addRoute('GET','/v1/auth/pubkey', 'App\Controller\AuthController::getPub
  * IndexController
  */
 Router::addRoute('POST','/v1/sum', 'App\Controller\IndexController::sum');
+
+/**
+ * SysUserController
+ */
+Router::addRoute('GET','/v1/admin/sys-users/{guid}', 'App\Controller\Admin\SysUserController::getUser');
 

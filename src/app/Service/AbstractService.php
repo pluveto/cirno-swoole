@@ -6,4 +6,5 @@ use Hyperf\Config\Annotation\Value;
 
 abstract class AbstractService
 {    
+  
 }

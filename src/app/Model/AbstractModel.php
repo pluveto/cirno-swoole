@@ -9,6 +9,8 @@ use Hyperf\DbConnection\Model\Model;
 
 class AbstractModel extends Model
 {
+    protected $primaryKey = "guid";
+    
     public $timestamps = true;
 
     public $incrementing = false;
@@ -23,9 +25,9 @@ class AbstractModel extends Model
             $this->createdAt = time();
             $this->updatedAt = time();
         }
-        if(!$this->guid){
+        if (!$this->guid) {
             $this->guid = GeneralService::snowflake()->generate();
-        }        
+        }
     }
     public function updating($event)
     {

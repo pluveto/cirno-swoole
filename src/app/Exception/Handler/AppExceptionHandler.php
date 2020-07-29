@@ -59,7 +59,7 @@ class AppExceptionHandler extends ExceptionHandler
         }
    
         return $response->withHeader("content-type", "application/json")
-            ->withStatus(500)->withBody(new SwooleStream($wrapper->getString()));
+            ->withStatus($wrapper->getCode())->withBody(new SwooleStream($wrapper->getString()));
     }
 
     public function isValid(Throwable $throwable): bool

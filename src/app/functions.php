@@ -110,6 +110,15 @@ function array_key_contains_r(array $array, string $search): bool
     }
     return false;
 }
+
+function all_in_array($array, $standard){
+    foreach ($array as $item) {
+        if(!in_array($item, $standard)){
+            return false;
+        }
+    }
+    return true;
+}
 /**
  * ======= Other exts ======= 
  */

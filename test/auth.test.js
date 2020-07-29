@@ -25,11 +25,9 @@ test('Try to register with simple password and username ' + username, async () =
 test('Try to register with username ' + username, async () => {
     const ret = await api.auth.signUpByUsername(username, "12345678", publicKey)
     expect.assertions(ret.data.result!=null);
-    console.log(ret.data.result);
 })
 
 test('Try to login with username ' + username, async () => {
     const ret = await api.auth.loginByUsername(username, "12345678", publicKey)
     expect.assertions(ret.data.result!=null);
-    console.log(ret.data.result);
 })

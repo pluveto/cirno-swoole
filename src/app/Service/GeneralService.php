@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\Model\SysUser;
-use Hyperf\Config\Annotation\Value;
 use Hyperf\Database\Model\Model;
 use Hyperf\Snowflake\IdGenerator;
 use Hyperf\Snowflake\IdGeneratorInterface;
@@ -34,9 +32,37 @@ class GeneralService extends AbstractService
         return $this->model::query()->where($key, $value)->count() >= 1;
     }
 
-    public function get(string $key, $value)
+    public function get($type, $value, $withs = [], $excepts = [], $pivot = false)
+    {        
+        return $this->getWithColumns($type, $value, $withs, ["*"], $excepts, $pivot);
+    }
+    public function getWithColumns($type, $value, $withs = [], $columns = ["*"], $excepts = [], $pivot = false)
     {
-        return $this->model::query()->where($key, $value)->first();
+        $userQuery = $this->model::query()
+            ->where($type, $value);
+        foreach ($withs as $with) {
+            $userQuery = $userQuery->with($with);
+        }
+        $result = $userQuery->first($columns)->toArray();
+        foreach ($excepts as $except) {
+            unset($result[$except]);
+        }
+
+        // Remove pivot field
+
+        if ($pivot) {
+            return $result;
+        }
+        foreach ($withs as $with) {
+            // with = "role"
+            if (!is_array($result[$with])) {
+                continue;
+            }
+            foreach ($result[$with] as $key => $value) {
+                unset($result[$with][$key]["pivot"]);
+            }
+        }
+        return $result;
     }
 
     public static function snowflake(): IdGenerator

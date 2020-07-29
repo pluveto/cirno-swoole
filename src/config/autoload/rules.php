@@ -92,6 +92,15 @@ return [
             '__permission' => 'none',
             '__encrypted' => false,
         ],
+        '/v1/admin/sys-users/{guid}' => [
+            'with' => [
+                'description' => 'with',
+                'type' => 'string',
+                'default' => '',
+            ],
+            '__permission' => 'none',
+            '__encrypted' => false,
+        ],
     ],
     'permissions' => [
     ],

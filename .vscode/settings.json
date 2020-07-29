@@ -13,6 +13,7 @@
     "git.ignoreLimitWarning": true,
     "favorites.resources": [
         "src/app",
-        "start"
+        "start",
+        "src/runtime/logs"
     ],
 }

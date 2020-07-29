@@ -82,9 +82,9 @@ class AuthController extends BaseController
 
         $token = $this->authService->authorize($user->guid);
 
-        return $this->successWithEncryption([
+        return $this->created([
             "token" => $token->toString()
-        ], null, 201);
+        ]);
     }
 
     /**
@@ -113,9 +113,9 @@ class AuthController extends BaseController
 
         $token = $this->authService->authorize($user->guid);
 
-        return $this->successWithEncryption([
+        return $this->created([
             "token" => $token->toString()
-        ], null, 201);
+        ]);
     }
 
     /**
@@ -166,7 +166,6 @@ class AuthController extends BaseController
         $text = $captha->getText();
         $redis = ApplicationContext::getContainer()->get(\Hyperf\Redis\Redis::class);
         $redis->set('captcha_' . str_replace("-", "", $uuid), $text, 60);
-        var_dump($req);
         if ($req->raw) {
             return $captha->output($this->response->raw(""), 1);
         } else {

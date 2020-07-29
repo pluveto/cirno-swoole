@@ -3,8 +3,7 @@ const axios = require("axios");
 
 const { BadRequestException } = require("./exception");
 
-const JSEncrypt = require('node-jsencrypt');
-const jsEncrypt = new JSEncrypt();
+const jsEncrypt = new (require('node-jsencrypt'))();
 
 axios.defaults.baseURL = "http://192.168.146.3:9501"
 axios.defaults.timeout = 500
@@ -54,6 +53,15 @@ const api = {
             return await axios.post(`/v1/sum`, {a, b});
         },
     },
+    
+    /**
+    * SysUser
+    */
+    sysUser: {
+        getUser: async (guid, with = "") => {
+            return await axios.get(`/v1/admin/sys-users/${guid}`, {params: {with}});
+        },
+    },
 }//api
 
 
@@ -61,7 +69,6 @@ api.auth.signUpByUsername = async (username, password, pubkey = null) => {
     jsEncrypt.setKey(pubkey);
     const crendentials = jsEncrypt.encrypt(JSON.stringify({ username, password }))
     const ret = await axios.post('/v1/auth/signup/username', { crendentials });
-    console.log(ret.data.result);
     //ret.data.result = jsEncrypt.decrypt(ret.data.result);
     return ret;
 }
