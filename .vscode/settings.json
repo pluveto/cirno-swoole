@@ -1,0 +1,18 @@
+{
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "**/runtime/*/**": true,
+        "**/cache/*/**": true,
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+    },
+    "debug.javascript.codelens.npmScripts": "never",
+    "git.ignoreLimitWarning": true,
+    "favorites.resources": [
+        "src/app",
+        "start"
+    ],
+}

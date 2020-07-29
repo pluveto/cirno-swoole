@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "jest": "^26.1.0",
+    "node-jsencrypt": "^1.0.0"
+  },
+  "scripts": {
+    "test": "jest --env=node"
+  }
+}
