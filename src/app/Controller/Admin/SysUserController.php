@@ -78,6 +78,11 @@ class SysUserController extends BaseController
 
         [$withs, $columns] = array_cluster($fields, [$withAllowed, $columnsAllowd]);
 
+        var_dump($withs);
+        var_dump($columns);
+        
+        throw new ModelNotFoundException();
+
         $user = (new GeneralService(SysUser::class))->getWithColumns("guid", $guid, $withs, $columns);
 
         if (!$user) {

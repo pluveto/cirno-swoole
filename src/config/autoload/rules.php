@@ -93,8 +93,8 @@ return [
             '__encrypted' => false,
         ],
         '/v1/admin/sys-users/{guid}' => [
-            'with' => [
-                'description' => 'with',
+            'fields' => [
+                'description' => 'fields',
                 'type' => 'string',
                 'default' => '',
             ],

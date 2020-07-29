@@ -119,6 +119,25 @@ function all_in_array($array, $standard){
     }
     return true;
 }
+
+
+/**
+ * 将字段组归类
+ * 
+ * 例如，有字段 {1, 2, 3, 4, 5} 归类数组为 {0,1,2} {4,5,6}，则归类结果为 {1,2} {4,5}
+ *
+ * @param array $fields
+ * @param array $arrays
+ * @return array
+ */
+function array_cluster($fields, $arrays){
+    $retArrays = [];
+    foreach ($arrays as $array) {
+        $retArrays[] = array_intersect($fields, $array);
+    }
+    return $retArray;
+}
+
 /**
  * ======= Other exts ======= 
  */

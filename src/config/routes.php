@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 /**
  * Router file.
- * Generated at 2020-07-30 06:05:07 by AutoRouter.
+ * Generated at 2020-07-30 06:28:36 by AutoRouter.
  */
 
 use Hyperf\HttpServer\Router\Router;
