@@ -20,7 +20,7 @@ class BaseFilter  implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $classFullName =  get_class($this);
-        //echo "开始过滤 \e[1;36m$classFullName\e[0m\n";
+        echo "经过 \e[1;36m$classFullName\e[0m\n";
         $afterFilter = $this->filter($request);
         \Hyperf\Utils\Context::set(ServerRequestInterface::class, $afterFilter);
         return $handler->handle($request);

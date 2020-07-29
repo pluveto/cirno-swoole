@@ -22,6 +22,6 @@ return [
         RequestMappingFilter::class,
         AuthenticationFilter::class,
         AuthorizationFilter::class,
-        ParameterValidatingFilter::class
+        ParameterValidatingFilter::class,
     ],
 ];

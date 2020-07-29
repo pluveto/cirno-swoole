@@ -2,7 +2,7 @@
 
 namespace App\Type;
 
-class ResponseWrapper
+class GeneralResponseWrapper implements ResponseWrapperInterface
 {
 
     /**
@@ -104,7 +104,7 @@ class ResponseWrapper
      *
      * @return  self
      */
-    public function setMessage(string $message)
+    public function setMessage(?string $message)
     {
         $this->message = $message;
 

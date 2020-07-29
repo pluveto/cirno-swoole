@@ -58,21 +58,26 @@ const api = {
 
 
 api.auth.signUpByUsername = async (username, password, pubkey = null) => {
-    jsEncrypt.setPublicKey(pubkey);
+    jsEncrypt.setKey(pubkey);
     const crendentials = jsEncrypt.encrypt(JSON.stringify({ username, password }))
-    return await axios.post('/v1/auth/signup/username', { crendentials });
+    const ret = await axios.post('/v1/auth/signup/username', { crendentials });
+    console.log(ret.data.result);
+    //ret.data.result = jsEncrypt.decrypt(ret.data.result);
+    return ret;
 }
 
 api.auth.login = async (type, subject, password, pubkey = null) => {
-    jsEncrypt.setPublicKey(pubkey);
+    jsEncrypt.setKey(pubkey);
     const crendentials = jsEncrypt.encrypt(JSON.stringify({ subject, password }))
     return await axios.post(`/v1/auth/login/${type}`, { crendentials });
 }
 
 api.auth.loginByUsername = async (subject, password, pubkey = null) => {
-    jsEncrypt.setPublicKey(pubkey);
+    jsEncrypt.setKey(pubkey);
     const crendentials = jsEncrypt.encrypt(JSON.stringify({ subject, password }))
-    return await axios.post(`/v1/auth/login/username`, { crendentials });
+    const ret = await axios.post(`/v1/auth/login/username`, { crendentials });
+    //ret.data.result = jsEncrypt.decrypt(ret.data.result);
+    return ret;
 }
 
 

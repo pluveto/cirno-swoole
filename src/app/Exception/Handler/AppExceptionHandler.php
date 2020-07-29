@@ -15,7 +15,7 @@ namespace App\Exception\Handler;
 use App\Exception\BaseCirnoHttpException;
 use App\Exception\BaseHttpException;
 use App\Exception\MethodNotAllowedException;
-use App\Type\ResponseWrapper;
+use App\Type\GeneralResponseWrapper;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Exception\NotFoundException;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -48,14 +48,14 @@ class AppExceptionHandler extends ExceptionHandler
                 $result = ["__debug" => $throwable->getDebugData()];
             }
 
-            $wrapper = new ResponseWrapper($code, $throwable->getMessage(), $result);
+            $wrapper = new GeneralResponseWrapper($code, $throwable->getMessage(), $result);
 
             // 阻止异常冒泡
             $this->stopPropagation();
         }else{
             $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
             $this->logger->error($throwable->getTraceAsString());
-            $wrapper = new ResponseWrapper(500, "Internal server exception.", ["__debug" => $throwable->getTrace()]);
+            $wrapper = new GeneralResponseWrapper(500, "Internal server exception.", ["__debug" => $throwable->getTrace()]);
         }
    
         return $response->withHeader("content-type", "application/json")

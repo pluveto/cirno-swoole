@@ -36,7 +36,12 @@ class EncrytpionService{
 
     public function encryptBase64($subject):string
     {
-        return json_decode(self::encrypt($subject, $this->publicKey));
+        return self::encrypt($subject, $this->publicKey);
+    }
+
+    public function privateEncryptBase64($subject):string
+    {
+        return self::privateEncrypt($subject, $this->privateKey);
     }
 
     /**
@@ -78,6 +83,15 @@ class EncrytpionService{
     {
         $encrypted = '';
         openssl_public_encrypt($subject, $encrypted, $publicKey);
+        $encrypted = base64_encode($encrypted);
+
+        return $encrypted;
+    }
+
+    private static function privateEncrypt(string $subject, string $privateKey): string
+    {
+        $encrypted = '';
+        openssl_private_encrypt($subject, $encrypted, $privateKey);
         $encrypted = base64_encode($encrypted);
 
         return $encrypted;

@@ -6,6 +6,9 @@ namespace App\Controller;
 use App\Controller\BaseController;
 use Hyperf\Di\Annotation\Inject;
 use App\Exception\BadRequestException;
+use App\Middleware\Auth\ResponseEncryptionMiddleware;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\Middlewares;
 use App\Service\AuthService;
 use App\Service\SysUserService;
 use App\Validation\AuthValidation;
@@ -51,34 +54,37 @@ class AuthController extends BaseController
      * @apiVersion  1.0.0
      * @apiPermission none
      * @apiEncrypted
+     *
      * @apiParam  {String{3..}} subject 用户名/邮箱/手机
      * @apiParam  {String{6..}} password 密码
+     * 
      */
     public function login($type)
     {
+        
         $req = $this->params();
 
-        if(!in_array($type, ["username", "phone", "email"])){
+        if (!in_array($type, ["username", "phone", "email"])) {
             throw new BadRequestException(__("Incorrect login type."));
         }
 
         $subject = $req->subject;
         $password = $req->password;
 
-        if($type == "username") $subject = $this->authValidation->validateUsername($subject);
+        if ($type == "username") $subject = $this->authValidation->validateUsername($subject);
         $password = $this->authValidation->validatePassword($password, $subject);
 
         $user = $this->sysUserService->loginUserWith($type, $subject, $password);
 
-        if(null == $user){
+        if (null == $user) {
             throw new BadRequestException(__("Incorrect username or password"));
         }
 
         $token = $this->authService->authorize($user->guid);
 
-        return $this->created([
+        return $this->successWithEncryption([
             "token" => $token->toString()
-        ]);
+        ], null, 201);
     }
 
     /**
@@ -88,10 +94,10 @@ class AuthController extends BaseController
      * @apiGroup auth
      * @apiVersion  1.0.0
      * @apiPermission none
-     * @apiEncrypted
-     *
+     * @apiEncrypted     
      * @apiParam  {String{3..}} username 用户名
      * @apiParam  {String{6..}} password 密码
+     * 
      */
     public function signUpByUsername()
     {
@@ -107,9 +113,9 @@ class AuthController extends BaseController
 
         $token = $this->authService->authorize($user->guid);
 
-        return $this->created([
+        return $this->successWithEncryption([
             "token" => $token->toString()
-        ]);
+        ], null, 201);
     }
 
     /**
@@ -186,7 +192,7 @@ class AuthController extends BaseController
         $publicKey = config("keys.public");
         echo $this->params()->raw;
         if ($this->params()->raw === true) {
-            return $this->response->raw($publicKey);            
+            return $this->response->raw($publicKey);
         }
         $version = config("keys.version");
         return $this->success(

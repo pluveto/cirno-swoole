@@ -3,7 +3,8 @@
 
 namespace App\Controller;
 
-use App\Type\ResponseWrapper;
+use App\Type\EncryptedResponseWrapper;
+use App\Type\GeneralResponseWrapper;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Utils\Context;
 use Hyperf\Di\Annotation\Inject;
@@ -35,7 +36,8 @@ class BaseController
     protected $response;
 
 
-    protected function params(){
+    protected function params()
+    {
         return Context::get("app.request.params");
     }
 
@@ -52,11 +54,28 @@ class BaseController
         if ($ret == null) {
             $ret = new \stdClass();
         }
-        $wrapper = new ResponseWrapper($code ? $code : $status, null, $ret);
+        $wrapper = new GeneralResponseWrapper($code ? $code : $status, null, $ret);
 
         return ((object)$this->response)->withHeader("content-type", "application/json")
-        ->withStatus($status)->withBody(new SwooleStream($wrapper->getString()));
+            ->withStatus($status)->withBody(new SwooleStream($wrapper->getString()));
+    }
+    /**
+     * 成功时返回（并加密）
+     *
+     * @param mixed $ret 返回结果
+     * @param integer $code 用户状态码，默认和 HTTP 状态码相同
+     * @param integer $status HTTP 状态码
+     * @return void
+     */
+    protected function successWithEncryption($ret = null, int $code = null, int $status = 200): Psr7ResponseInterface
+    {
+        if ($ret == null) {
+            $ret = new \stdClass();
+        }
+        $wrapper = new EncryptedResponseWrapper($code ? $code : $status, null, $ret);
 
+        return ((object)$this->response)->withHeader("content-type", "application/json")
+            ->withStatus($status)->withBody(new SwooleStream($wrapper->getString()));
     }
     /**
      * 创建成功时返回
